@@ -1,0 +1,25 @@
+name: Display Changes
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+jobs:
+  show-changes:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Show Commit Details
+        run: |
+          echo "Commit By: ${{ github.actor }}"
+          echo "Branch: ${{ github.ref_name }}"
+          git log -1 --pretty=%B
+
+      - name: Show Changed Files
+        run: |
+          git diff-tree --no-commit-id --name-only -r ${{ github.sha }}
